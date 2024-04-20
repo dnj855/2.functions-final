@@ -1,8 +1,19 @@
 import { prompt } from "./prompt.js";
 
-const characterArrayCreation = (length, start) => {
+const characterArrayCreation = (length, start, arr = []) => {
   let utfIndexes = Array.from(Array(length)).map((e, i) => i + start);
-  return utfIndexes.map((x) => String.fromCharCode(x));
+  if (arr.length > 0) {
+    return arrConcat(
+      arr,
+      utfIndexes.map((x) => String.fromCharCode(x))
+    );
+  } else {
+    return utfIndexes.map((x) => String.fromCharCode(x));
+  }
+};
+
+const arrConcat = (arr1, arr2) => {
+  return [...arr1, ...arr2];
 };
 
 const characterInitialisation = (
@@ -12,16 +23,13 @@ const characterInitialisation = (
 ) => {
   let characters = characterArrayCreation(26, 97);
   if (specials) {
-    const specials = characterArrayCreation(15, 33);
-    characters = [...characters, ...specials];
+    characters = characterArrayCreation(15, 33, characters);
   }
   if (numbers) {
-    const numbers = characterArrayCreation(10, 48);
-    characters = [...characters, ...numbers];
+    characters = characterArrayCreation(10, 48, characters);
   }
   if (capitals) {
-    const capitals = characterArrayCreation(26, 65);
-    characters = [...characters, ...capitals];
+    characters = characterArrayCreation(26, 65, characters);
   }
   return characters;
 };
