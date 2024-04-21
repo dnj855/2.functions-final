@@ -54,21 +54,45 @@ const characterInitialisation = (
 };
 
 /**
+ * Prompts the user for a password length and validates the input.
+ *
+ * @returns {string} The validated password length.
+ */
+const lengthPrompt = () => {
+  const length = prompt("🔢 Combien de caractères ? (8-36) ");
+  if (isNaN(Number(length)) || Number(length) < 8 || Number(length) > 36) {
+    console.log("❌ Merci de saisir un nombre compris entre 8 et 36.");
+    return lengthPrompt();
+  }
+  return length;
+};
+
+/**
+ * Prompts the user for a boolean value (y/n) and validates the input.
+ *
+ * @param {string} message - The prompt message.
+ * @returns {boolean} The validated boolean value.
+ */
+const booleanPrompt = (message) => {
+  const response = prompt(message);
+  if (response !== "y" && response !== "n") {
+    console.log("❌ Merci de répondre par y ou n.");
+    return booleanPrompt(message);
+  }
+  return response === "y";
+};
+
+/**
  * Generates a password based on user input.
  *
  * @returns {string} The generated password.
  */
 const passwordGenerator = () => {
-  //TODO: Add a check for every input and a recursivity if the input is not correct
-  const length = prompt("🔢 Combien de caractères ? (8-36) ");
-  const specials = prompt("🔣 Caractères spéciaux ? (y/n) ");
-  const numbers = prompt("🔢 Chiffres ? (y/n) ");
-  const capitals = prompt("⬆️ Majuscules ? (y/n) ");
-  const characters = characterInitialisation(
-    specials === "y",
-    numbers === "y",
-    capitals === "y"
-  );
+  const length = lengthPrompt();
+  const specials = booleanPrompt("🔣 Caractères spéciaux ? (y/n) ");
+  const numbers = booleanPrompt("🔢 Chiffres ? (y/n) ");
+  const capitals = booleanPrompt("⬆️ Majuscules ? (y/n) ");
+  const characters = characterInitialisation(specials, numbers, capitals);
   let password = "";
   for (let i = 0; i < Number(length); i++) {
     const randomIndex = Math.floor(Math.random() * characters.length);
