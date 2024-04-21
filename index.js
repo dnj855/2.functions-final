@@ -1,21 +1,40 @@
 import { prompt } from "./prompt.js";
 
+/**
+ * Creates an array of characters from a given Unicode start point.
+ *
+ * @param {number} length - The number of characters to create.
+ * @param {number} start - The Unicode start point.
+ * @param {Array} [arr=[]] - An optional array to which the characters will be appended.
+ * @returns {Array} The array of characters.
+ */
 const characterArrayCreation = (length, start, arr = []) => {
   let utfIndexes = Array.from(Array(length)).map((e, i) => i + start);
-  if (arr.length > 0) {
-    return arrConcat(
-      arr,
-      utfIndexes.map((x) => String.fromCharCode(x))
-    );
-  } else {
-    return utfIndexes.map((x) => String.fromCharCode(x));
-  }
+  return arrConcat(
+    arr,
+    utfIndexes.map((x) => String.fromCharCode(x))
+  );
 };
 
+/**
+ * Concatenates two arrays.
+ *
+ * @param {Array} arr1 - The first array.
+ * @param {Array} arr2 - The second array.
+ * @returns {Array} The concatenated array.
+ */
 const arrConcat = (arr1, arr2) => {
   return [...arr1, ...arr2];
 };
 
+/**
+ * Initializes an array of characters based on the given parameters.
+ *
+ * @param {boolean} [specials=false] - Whether to include special characters.
+ * @param {boolean} [numbers=false] - Whether to include numbers.
+ * @param {boolean} [capitals=false] - Whether to include capital letters.
+ * @returns {Array} The array of characters.
+ */
 const characterInitialisation = (
   specials = false,
   numbers = false,
@@ -34,6 +53,11 @@ const characterInitialisation = (
   return characters;
 };
 
+/**
+ * Generates a password based on user input.
+ *
+ * @returns {string} The generated password.
+ */
 const passwordGenerator = () => {
   //TODO: Add a check for every input and a recursivity if the input is not correct
   const length = prompt("🔢 Combien de caractères ? (8-36) ");
@@ -51,6 +75,7 @@ const passwordGenerator = () => {
     password += characters[randomIndex];
   }
   console.log("Votre mot de passe généré est :", password);
+  return password;
 };
 
 passwordGenerator();
