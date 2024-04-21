@@ -89,23 +89,42 @@ const booleanPrompt = (message) => {
 };
 
 /**
- * Generates a password based on user input.
+ * Generates a password of a given length from a set of characters.
+ *
+ * @param {Array} [characters=characterInitialisation()] - The characters to use for the password.
+ * @param {number} [length=8] - The length of the password.
+ * @returns {string} The generated password.
+ */
+const passwordGenerator = (
+  characters = characterInitialisation(),
+  length = 8
+) => {
+  let password = "";
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    password += characters[randomIndex];
+  }
+  return password;
+};
+
+/**
+ * Runs the password generator application.
  *
  * @returns {string} The generated password.
  */
-const passwordGenerator = () => {
+const passwordGeneratorApp = () => {
   const length = lengthPrompt();
   const specials = booleanPrompt("🔣 Caractères spéciaux ? (y/n) ");
   const numbers = booleanPrompt("🔢 Chiffres ? (y/n) ");
   const capitals = booleanPrompt("⬆️ Majuscules ? (y/n) ");
   const characters = characterInitialisation(specials, numbers, capitals);
-  let password = "";
-  for (let i = 0; i < Number(length); i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    password += characters[randomIndex];
+  let password = passwordGenerator(characters, Number(length));
+  if (capitals) {
+    while (!/[A-Z]/.test(password)) {
+      password = passwordGenerator(characters, Number(length));
+    }
   }
-  console.log("Votre mot de passe généré est :", password);
   return password;
 };
 
-passwordGenerator();
+console.log("Votre mot de passe généré est :", passwordGeneratorApp());
