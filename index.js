@@ -41,15 +41,21 @@ const characterInitialisation = (
   capitals = false
 ) => {
   let characters = characterArrayCreation(26, 97);
-  if (specials) {
-    characters = characterArrayCreation(15, 33, characters);
+  const characterTypes = [
+    { include: specials, start: 33, length: 6 },
+    { include: specials, start: 42, length: 2 },
+    { include: specials, start: 45, length: 1 },
+    { include: specials, start: 64, length: 1 },
+    { include: numbers, start: 48, length: 10 },
+    { include: capitals, start: 65, length: 26 },
+  ];
+
+  for (let type of characterTypes) {
+    if (type.include) {
+      characters = characterArrayCreation(type.length, type.start, characters);
+    }
   }
-  if (numbers) {
-    characters = characterArrayCreation(10, 48, characters);
-  }
-  if (capitals) {
-    characters = characterArrayCreation(26, 65, characters);
-  }
+
   return characters;
 };
 
@@ -75,7 +81,7 @@ const lengthPrompt = () => {
  */
 const booleanPrompt = (message) => {
   const response = prompt(message);
-  if (response !== "y" && response !== "n") {
+  if (response.toLowerCase() !== "y" && response.toLowerCase() !== "n") {
     console.log("❌ Merci de répondre par y ou n.");
     return booleanPrompt(message);
   }
